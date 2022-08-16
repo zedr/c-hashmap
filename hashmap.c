@@ -1,15 +1,19 @@
-#include <stdio.h>
 #include <string.h>
 #include <malloc.h>
 #include "hashmap.h"
 
-int hash(char *key)
+unsigned short hash(const char *key)
 {
     unsigned short acc = 0;
     char ch;
 
-    while ((ch = *key++) != EOF) {
-        acc += ch;
+    for (int i = 0;; i++) {
+        ch = key[i];
+        if (ch == '\0') {
+            break;
+        } else {
+            acc += ch;
+        }
     }
 
     return acc;
@@ -25,21 +29,21 @@ void hashmap_init(hashmap_t *map)
 
 void hashmap_free(hashmap_t *map)
 {
-    for (int i = 0; i< map->max_keys; i++) {
+    for (int i = 0; i < map->max_keys; i++) {
         free(map->keys[i]);
         map->keys[i] = NULL;
     }
 }
 
-char *hashmap_set(hashmap_t *map, char *key, char *val)
+int hashmap_set(hashmap_t *map, char *key, char *val)
 {
-    int hsh = hash(key);
+    unsigned short hsh = hash(key);
     char *tmp = strdup(val);
     if (tmp) {
         (map->keys)[hsh] = tmp;
-        return tmp;
+        return (int) hsh;
     } else {
-        return NULL;
+        return -1;
     }
 }
 
