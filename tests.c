@@ -1,6 +1,8 @@
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "bugprone-suspicious-string-compare"
+
 #include <stdbool.h>
+#include <malloc.h>
 #include "lib/minunit.h"
 #include "hashmap.h"
 
@@ -8,10 +10,12 @@ hashmap_t map;
 
 void test_setup(void)
 {
+    hashmap_init(&map);
 }
 
 void test_teardown(void)
 {
+    hashmap_free(&map);
 }
 
 MU_TEST(test_init)
@@ -35,12 +39,21 @@ MU_TEST(test_set_get)
     mu_assert_string_eq("bar", hashmap_get(&map, "foo"));
 }
 
+MU_TEST(test_free)
+{
+    char *val = malloc(256);
+    map.keys[0] = val;
+    hashmap_free(&map);
+    mu_check(map.keys[0] == NULL);
+}
+
 MU_TEST_SUITE(test_suite)
 {
     MU_SUITE_CONFIGURE(&test_setup, &test_teardown);
 
     MU_RUN_TEST(test_init);
     MU_RUN_TEST(test_set_get);
+    MU_RUN_TEST(test_free);
 }
 
 int main(int argc, char *argv[])
@@ -49,4 +62,5 @@ int main(int argc, char *argv[])
     MU_REPORT();
     return MU_EXIT_CODE;
 }
+
 #pragma clang diagnostic pop

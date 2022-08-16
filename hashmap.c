@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <malloc.h>
 #include "hashmap.h"
 
 int hash(char *key)
@@ -18,6 +19,14 @@ void hashmap_init(hashmap_t *map)
 {
     map->max_keys = USHRT_MAX;
     for (int i = 0; i < USHRT_MAX; i++) {
+        map->keys[i] = NULL;
+    }
+}
+
+void hashmap_free(hashmap_t *map)
+{
+    for (int i = 0; i< map->max_keys; i++) {
+        free(map->keys[i]);
         map->keys[i] = NULL;
     }
 }
