@@ -3,9 +3,15 @@
 
 #include <limits.h>
 
+struct key {
+    char *name;
+    char *val;
+    struct key *next;
+};
+
 typedef struct {
     unsigned short max_keys;
-    char *keys[USHRT_MAX];
+    struct key *keys[USHRT_MAX];
 } hashmap_t;
 
 unsigned short hash(const char *key);

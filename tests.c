@@ -20,8 +20,14 @@ void test_teardown(void)
 
 MU_TEST(test_init)
 {
-    map.keys[0] = "asa";
+    struct key *k = malloc(sizeof(struct key));
+    map.keys[0] = k;
+    map.keys[0]->name = "foo";
+    map.keys[0]->val = "bar";
+    map.keys[0]->next = NULL;
+
     hashmap_init(&map);
+
     int found_string = false;
     for (int i = 0; i < map.max_keys; i++) {
         if (map.keys[i] != NULL) {
@@ -30,7 +36,9 @@ MU_TEST(test_init)
         }
     }
 
+    free(k);
     mu_check(!found_string);
+
 }
 
 MU_TEST(test_set_get)
@@ -41,10 +49,21 @@ MU_TEST(test_set_get)
 
 MU_TEST(test_free)
 {
-    char *val = malloc(256);
-    map.keys[0] = val;
+    int hsh = hash("foo");
+    hashmap_set(&map, "foo", "bar");
+    hashmap_set(&map, "bar", "foo");
+    hashmap_set(&map, "rab", "oof");
     hashmap_free(&map);
-    mu_check(map.keys[0] == NULL);
+    mu_check(map.keys[hsh] == NULL);
+}
+
+MU_TEST(test_collision)
+{
+    hashmap_set(&map, "ofo", "bra");
+    hashmap_set(&map, "foo", "bar");
+    hashmap_set(&map, "oof", "rab");
+    char *val = hashmap_get(&map, "foo");
+    mu_assert_string_eq("bar", val);
 }
 
 MU_TEST_SUITE(test_suite)
@@ -54,6 +73,7 @@ MU_TEST_SUITE(test_suite)
     MU_RUN_TEST(test_init);
     MU_RUN_TEST(test_set_get);
     MU_RUN_TEST(test_free);
+    MU_RUN_TEST(test_collision);
 }
 
 int main(int argc, char *argv[])
