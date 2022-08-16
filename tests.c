@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "bugprone-suspicious-string-compare"
 #include <stdbool.h>
 #include "lib/minunit.h"
 #include "hashmap.h"
@@ -30,8 +32,7 @@ MU_TEST(test_init)
 MU_TEST(test_set_get)
 {
     mu_check(hashmap_set(&map, "foo", "bar"));
-    mu_assert_string_eq("bar", hashmap_get(&map,
-                                           "foo")); // NOLINT(bugprone-suspicious-string-compare)
+    mu_assert_string_eq("bar", hashmap_get(&map, "foo"));
 }
 
 MU_TEST_SUITE(test_suite)
@@ -48,3 +49,4 @@ int main(int argc, char *argv[])
     MU_REPORT();
     return MU_EXIT_CODE;
 }
+#pragma clang diagnostic pop
