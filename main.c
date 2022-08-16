@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include "hashmap.h"
 
-int main() {
+int main()
+{
 
     hashmap_t map;
     hashmap_init(&map);

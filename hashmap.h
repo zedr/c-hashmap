@@ -11,7 +11,9 @@ typedef struct {
 int hash(char *key);
 
 void hashmap_init(hashmap_t *map);
+
 char *hashmap_set(hashmap_t *map, char *key, char *val);
+
 char *hashmap_get(hashmap_t *map, char *key);
 
 #endif //HASHMAP_HASHMAP_H

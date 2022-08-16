@@ -7,7 +7,7 @@ int hash(char *key)
     unsigned short acc = 0;
     char ch;
 
-    while((ch = *key++) != EOF) {
+    while ((ch = *key++) != EOF) {
         acc += ch;
     }
 

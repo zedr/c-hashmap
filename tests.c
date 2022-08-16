@@ -30,20 +30,21 @@ MU_TEST(test_init)
 MU_TEST(test_set_get)
 {
     mu_check(hashmap_set(&map, "foo", "bar"));
-    mu_assert_string_eq("bar", hashmap_get(&map, "foo")); // NOLINT(bugprone-suspicious-string-compare)
+    mu_assert_string_eq("bar", hashmap_get(&map,
+                                           "foo")); // NOLINT(bugprone-suspicious-string-compare)
 }
 
 MU_TEST_SUITE(test_suite)
 {
-	MU_SUITE_CONFIGURE(&test_setup, &test_teardown);
+    MU_SUITE_CONFIGURE(&test_setup, &test_teardown);
 
-	MU_RUN_TEST(test_init);
+    MU_RUN_TEST(test_init);
     MU_RUN_TEST(test_set_get);
 }
 
 int main(int argc, char *argv[])
 {
-	MU_RUN_SUITE(test_suite);
-	MU_REPORT();
-	return MU_EXIT_CODE;
+    MU_RUN_SUITE(test_suite);
+    MU_REPORT();
+    return MU_EXIT_CODE;
 }
