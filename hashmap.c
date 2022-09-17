@@ -49,7 +49,7 @@ int hashmap_set(hashmap_t *map, char *key, char *val)
 {
     unsigned short hsh = hash(key);
     char *tmp_val = strdup(val);
-    struct key *tmp_key, *k;
+    struct key *tmp_key;
 
     if (tmp_val) {
         tmp_key = (map->keys)[hsh];
